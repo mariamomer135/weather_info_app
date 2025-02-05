@@ -15,12 +15,26 @@ class _WeatherAppState extends State<WeatherApp> {
   String cityName = "";
   String temperature = "";
   String weatherCondition = "";
+  List<Map<String, String>> weeklyForecast = [];
 
   void fetchWeather() {
     setState(() {
       cityName = _cityController.text;
       temperature = "${Random().nextInt(16) + 15}°C"; // 15°C - 30°C
       weatherCondition = ["Sunny", "Cloudy", "Rainy"][Random().nextInt(3)];
+      weeklyForecast.clear();
+    });
+  }
+
+  void fetch7DayForecast() {
+    setState(() {
+      weeklyForecast = List.generate(7, (index) {
+        return {
+          "day": "Day ${index + 1}",
+          "temperature": "${Random().nextInt(16) + 15}°C",
+          "condition": ["Sunny", "Cloudy", "Rainy"][Random().nextInt(3)]
+        };
+      });
     });
   }
 
@@ -41,9 +55,18 @@ class _WeatherAppState extends State<WeatherApp> {
                 ),
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: fetchWeather,
-                child: Text('Fetch Weather'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: fetchWeather,
+                    child: Text('Fetch Weather'),
+                  ),
+                  ElevatedButton(
+                    onPressed: fetch7DayForecast,
+                    child: Text('7-Day Forecast'),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
               if (cityName.isNotEmpty)
@@ -52,6 +75,19 @@ class _WeatherAppState extends State<WeatherApp> {
                     Text("City: $cityName", style: TextStyle(fontSize: 20)),
                     Text("Temperature: $temperature", style: TextStyle(fontSize: 20)),
                     Text("Condition: $weatherCondition", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+              SizedBox(height: 20),
+              if (weeklyForecast.isNotEmpty)
+                Column(
+                  children: [
+                    Text("7-Day Forecast", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                    ...weeklyForecast.map((day) => Card(
+                          child: ListTile(
+                            title: Text(day["day"]!),
+                            subtitle: Text("${day["temperature"]} - ${day["condition"]}"),
+                          ),
+                        )),
                   ],
                 ),
             ],
