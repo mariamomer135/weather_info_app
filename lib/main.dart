@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,6 +12,17 @@ class WeatherApp extends StatefulWidget {
 
 class _WeatherAppState extends State<WeatherApp> {
   final TextEditingController _cityController = TextEditingController();
+  String cityName = "";
+  String temperature = "";
+  String weatherCondition = "";
+
+  void fetchWeather() {
+    setState(() {
+      cityName = _cityController.text;
+      temperature = "${Random().nextInt(16) + 15}°C"; // 15°C - 30°C
+      weatherCondition = ["Sunny", "Cloudy", "Rainy"][Random().nextInt(3)];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +37,4 @@ class _WeatherAppState extends State<WeatherApp> {
                 controller: _cityController,
                 decoration: InputDecoration(
                   labelText: 'Enter City Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {}, // Placeholder for function
-                child: Text('Fetch Weather'),
-              ),
-              SizedBox(height: 20),
-              Text("City: ", style: TextStyle(fontSize: 20)),
-              Text("Temperature: ", style: TextStyle(fontSize: 20)),
-              Text("Condition: ", style: TextStyle(fontSize: 20)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+           
