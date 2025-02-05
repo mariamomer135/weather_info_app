@@ -43,54 +43,56 @@ class _WeatherAppState extends State<WeatherApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text('Weather Info App')),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: _cityController,
-                decoration: InputDecoration(
-                  labelText: 'Enter City Name',
-                  border: OutlineInputBorder(),
+        body: SingleChildScrollView( // FIX: Allows scrolling if content overflows
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _cityController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter City Name',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: fetchWeather,
-                    child: Text('Fetch Weather'),
-                  ),
-                  ElevatedButton(
-                    onPressed: fetch7DayForecast,
-                    child: Text('7-Day Forecast'),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              if (cityName.isNotEmpty)
-                Column(
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("City: $cityName", style: TextStyle(fontSize: 20)),
-                    Text("Temperature: $temperature", style: TextStyle(fontSize: 20)),
-                    Text("Condition: $weatherCondition", style: TextStyle(fontSize: 20)),
+                    ElevatedButton(
+                      onPressed: fetchWeather,
+                      child: Text('Fetch Weather'),
+                    ),
+                    ElevatedButton(
+                      onPressed: fetch7DayForecast,
+                      child: Text('7-Day Forecast'),
+                    ),
                   ],
                 ),
-              SizedBox(height: 20),
-              if (weeklyForecast.isNotEmpty)
-                Column(
-                  children: [
-                    Text("7-Day Forecast", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                    ...weeklyForecast.map((day) => Card(
-                          child: ListTile(
-                            title: Text(day["day"]!),
-                            subtitle: Text("${day["temperature"]} - ${day["condition"]}"),
-                          ),
-                        )),
-                  ],
-                ),
-            ],
+                SizedBox(height: 20),
+                if (cityName.isNotEmpty)
+                  Column(
+                    children: [
+                      Text("City: $cityName", style: TextStyle(fontSize: 20)),
+                      Text("Temperature: $temperature", style: TextStyle(fontSize: 20)),
+                      Text("Condition: $weatherCondition", style: TextStyle(fontSize: 20)),
+                    ],
+                  ),
+                SizedBox(height: 20),
+                if (weeklyForecast.isNotEmpty)
+                  Column(
+                    children: [
+                      Text("7-Day Forecast", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      ...weeklyForecast.map((day) => Card(
+                            child: ListTile(
+                              title: Text(day["day"]!),
+                              subtitle: Text("${day["temperature"]} - ${day["condition"]}"),
+                            ),
+                          )),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
