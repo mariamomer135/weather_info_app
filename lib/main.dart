@@ -37,4 +37,27 @@ class _WeatherAppState extends State<WeatherApp> {
                 controller: _cityController,
                 decoration: InputDecoration(
                   labelText: 'Enter City Name',
-           
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: fetchWeather,
+                child: Text('Fetch Weather'),
+              ),
+              SizedBox(height: 20),
+              if (cityName.isNotEmpty)
+                Column(
+                  children: [
+                    Text("City: $cityName", style: TextStyle(fontSize: 20)),
+                    Text("Temperature: $temperature", style: TextStyle(fontSize: 20)),
+                    Text("Condition: $weatherCondition", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
